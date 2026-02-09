@@ -1,0 +1,22 @@
+{
+    "version": 4,
+    "metrics": {
+        "packageVersion": "525.33501.0.0"
+    },
+    "test": {
+        "isAllowed": true,
+        "installError.value": 1,
+        "installState": 6,
+        "installedVersion.Major": 1,
+        "installedVersion.Minor": 195,
+        "minimumVersion.Major": 1,
+        "minimumVersion.Minor": 140,
+        "productId": "9PC1H9VN18CM",
+        "packageFamilyName": "Microsoft.StartExperiencesApp_8wekyb3d8bbwe",
+        "isInstallerAllowedToInstallProduct": true,
+        "isPowerSupplyAdequate": true,
+        "isNetworkAvailableAndNotConstrained": true,
+        "isPrivacyConsentAccepted": true,
+        "WidgetsPackageVersion": "525.33501.0.0"
+    }
+}

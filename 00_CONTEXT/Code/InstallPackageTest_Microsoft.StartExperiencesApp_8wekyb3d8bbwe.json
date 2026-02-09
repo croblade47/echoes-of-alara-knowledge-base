@@ -1,0 +1,12 @@
+{
+    "version": 4,
+    "metrics": {
+        "packageVersion": "525.33501.0.0"
+    },
+    "test": {
+        "packageFamilyName": "Microsoft.StartExperiencesApp_8wekyb3d8bbwe",
+        "isInstalledOnDefaultVolume": true,
+        "errorCode": 1,
+        "WidgetsPackageVersion": "525.33501.0.0"
+    }
+}
