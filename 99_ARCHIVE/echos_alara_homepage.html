@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Echoes of Alara: Canvas & Mythos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a0033 50%, #330033 100%);
+            color: #ff6b6b;
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 80%, rgba(255, 0, 0, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(255, 107, 107, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 0;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(51, 0, 51, 0.8));
+            margin-bottom: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 107, 107, 0.3);
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
+        }
+
+        header h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            text-shadow: 3px 3px 10px rgba(255, 0, 0, 0.8);
+            background: linear-gradient(45deg, #ff0000, #ff6b6b, #cc0000);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        header p {
+            font-size: 1.4em;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+
+        .section {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(51, 0, 51, 0.4));
+            margin: 30px 0;
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 107, 107, 0.2);
+            box-shadow: 0 8px 32px rgba(255, 0, 0, 0.2), inset 0 0 20px rgba(255, 107, 107, 0.1);
+        }
+
+        .section h2 {
+            font-size: 2.2em;
+            margin-bottom: 20px;
+            color: #ff3333;
+            text-align: center;
+            text-transform: uppercase;
+            font-weight: 800;
+            text-shadow: 2px 2px 8px rgba(255, 0, 0, 0.7);
+        }
+
+        .welcome-text {
+            font-size: 1.2em;
+            text-align: center;
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+
+        .ai-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .ai-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .ai-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .ai-card h3 {
+            color: #ff6b6b;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .auth-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin: 40px 0;
+        }
+
+        @media (max-width: 768px) {
+            .auth-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .auth-form {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .auth-form h3 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #4ecdc4;
+            font-size: 1.4em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            box-shadow: 0 0 15px rgba(78, 205, 196, 0.5);
+            transform: scale(1.02);
+        }
+
+        button {
+            background: linear-gradient(45deg, #cc0000, #ff3333);
+            color: white;
+            border: 2px solid #ff6b6b;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3);
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 0, 0, 0.5);
+            background: linear-gradient(45deg, #ff0000, #ff6666);
+            border-color: #ff0000;
+        }
+
+        #upload-section {
+            text-align: center;
+        }
+
+        #image-upload {
+            margin: 20px 0;
+            padding: 20px;
+            border: 2px dashed rgba(255, 255, 255, 0.5);
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #image-upload:hover {
+            border-color: #4ecdc4;
+            background: rgba(78, 205, 196, 0.1);
+        }
+
+        #story-content {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            border-radius: 15px;
+            font-size: 1.1em;
+            text-align: center;
+            font-style: italic;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            margin-top: 60px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+        }
+
+        .feature-highlight {
+            background: linear-gradient(45deg, rgba(255, 107, 107, 0.2), rgba(78, 205, 196, 0.2));
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            border-left: 5px solid #4ecdc4;
+        }
+
+        .cta-button {
+            background: linear-gradient(45deg, #45b7d1, #96c93d);
+            font-size: 1.2em;
+            padding: 20px 40px;
+            margin: 20px auto;
+            display: block;
+            width: fit-content;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .loading::after {
+            content: "";
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4ecdc4;
+            border-radius: 50%;
+            display: inline-block;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5em;
+            }
+            
+            .section {
+                padding: 25px;
+                margin: 20px 0;
+            }
+            
+            .ai-info {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Music -->
+    <audio id="backgroundMusic" loop>
+        <source src="https://cdnjs.cloudflare.com/ajax/libs/tone.js/14.8.49/Tone.min.js" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    
+    <!-- Music Control Button -->
+    <div id="musicControl" style="position: fixed; top: 20px; right: 20px; z-index: 1000; background: rgba(0,0,0,0.8); padding: 10px; border-radius: 50%; border: 2px solid #ff3333; cursor: pointer; color: #ff3333; font-size: 20px; transition: all 0.3s ease;">
+        🔊
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>Echoes of Alara: Canvas & Mythos</h1>
+            <p>Unveiling Your Inner World Through Art & AI</p>
+            <p class="welcome-text">Share your art, discover your story, explore the depths of your subconscious mind</p>
+        </header>
+
+        <section class="section">
+            <h2>🌟 Welcome to Your Journey of Self-Discovery</h2>
+            <div class="welcome-text">
+                <p>Echoes of Alara is a revolutionary platform that transforms your everyday experiences and artistic expressions into profound psychological insights. Through the power of three specialized AI systems, we create personalized fantasy narratives that reveal hidden aspects of your psyche, helping both individuals and healthcare professionals understand the deeper layers of human consciousness.</p>
+                
+                <p>Upload your artwork, share your daily experiences, and watch as our AI weaves them into meaningful stories that serve as mirrors to your soul. Each interaction creates a unique avatar that journeys through parallel fantasy worlds, reflecting your inner landscape and personal growth.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>🤖 Our Three AI Guardians</h2>
+            <div class="ai-info">
+                <div class="ai-card">
+                    <h3>🎨 Artisan AI</h3>
+                    <p><strong>The Creative Interpreter</strong></p>
+                    <p>Analyzes your artwork's visual elements, color psychology, composition, and symbolic meaning. Extracts emotional undertones and subconscious expressions from your creative choices.</p>
+                </div>
+                
+                <div class="ai-card">
+                    <h3>📖 Narrative AI</h3>
+                    <p><strong>The Story Weaver</strong></p>
+                    <p>Transforms daily experiences and art analysis into compelling fantasy narratives. Creates character arcs, plots, and mythological frameworks that reflect your personal journey and psychological patterns.</p>
+                </div>
+                
+                <div class="ai-card">
+                    <h3>🧠 Psyche AI</h3>
+                    <p><strong>The Mind Reader</strong></p>
+                    <p>Provides psychological insights and therapeutic interpretations. Identifies behavioral patterns, emotional themes, and potential areas for personal growth based on your stories and interactions.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>🚀 Join the Alara Community</h2>
+            <div class="auth-section">
+                <div class="auth-form">
+                    <h3>✨ New to Alara?</h3>
+                    <form id="signup-form">
+                        <div class="form-group">
+                            <label for="signup-name">Full Name</label>
+                            <input type="text" id="signup-name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="signup-email">Email Address</label>
+                            <input type="email" id="signup-email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="signup-password">Password</label>
+                            <input type="password" id="signup-password" name="password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="user-type">I am a:</label>
+                            <select id="user-type" name="userType" style="width: 100%; padding: 12px; border: none; border-radius: 10px; background: rgba(255, 255, 255, 0.9); color: #333;">
+                                <option value="individual">Individual seeking self-discovery</option>
+                                <option value="healthcare">Healthcare professional</option>
+                                <option value="therapist">Therapist/Counselor</option>
+                                <option value="researcher">Researcher/Academic</option>
+                            </select>
+                        </div>
+                        <button type="submit">Begin My Journey</button>
+                    </form>
+                </div>
+
+                <div class="auth-form">
+                    <h3>🔑 Returning Traveler?</h3>
+                    <form id="login-form">
+                        <div class="form-group">
+                            <label for="login-email">Email Address</label>
+                            <input type="email" id="login-email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="login-password">Password</label>
+                            <input type="password" id="login-password" name="password" required>
+                        </div>
+                        <button type="submit">Continue My Story</button>
+                        <p style="text-align: center; margin-top: 15px; font-size: 0.9em;">
+                            <a href="#" style="color: #4ecdc4;">Forgot your password?</a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="upload-section">
+            <h2>🎨 Share Your Art, Discover Your Story</h2>
+            <div class="feature-highlight">
+                <p><strong>How it works:</strong> Upload any artwork - drawings, paintings, digital art, or even doodles. Our AI will analyze the visual elements, emotional content, and symbolic meaning, then weave these insights into a personalized fantasy narrative that reflects your inner world.</p>
+            </div>
+            
+            <form id="upload-form" enctype="multipart/form-data">
+                <input type="file" id="image-upload" name="image" accept="image/*" style="display: none;">
+                <label for="image-upload" style="display: block; padding: 40px; border: 2px dashed rgba(255, 255, 255, 0.5); border-radius: 15px; cursor: pointer; transition: all 0.3s ease;">
+                    📸 Click to Upload Your Artwork
+                    <br><small>Supported formats: JPG, PNG, GIF, WebP</small>
+                </label>
+                <div class="loading" id="loading"></div>
+                <button type="submit" class="cta-button">Analyze My Art & Create My Story</button>
+            </form>
+            <div id="upload-message"></div>
+        </section>
+
+        <section class="section" id="story-section">
+            <h2>📚 Your Mythos Unfolds</h2>
+            <div id="story-content">
+                <p>✨ Upload your art to begin your journey through the realms of Alara. Watch as your creativity transforms into epic tales that illuminate the hidden chambers of your mind.</p>
+                
+                <div style="margin-top: 30px; font-size: 0.9em; opacity: 0.8;">
+                    <p><strong>What to expect:</strong> Your personalized story will feature a unique avatar navigating fantasy landscapes that mirror your psychological journey. Each element of your artwork becomes a meaningful symbol in your tale, revealing insights about your emotions, aspirations, and inner conflicts.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>© 2025 Garrett Gauthier & Alara AI. All rights reserved.</p>
+            <p style="margin-top: 10px; font-size: 0.9em; opacity: 0.7;">
+                Empowering self-discovery through the fusion of art, psychology, and artificial intelligence.
+            </p>
+        </footer>
+    </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tone.js/14.8.49/Tone.min.js"></script>
+    <script>
+        // Background music with Tone.js
+        let musicEnabled = false;
+        let synth, reverb, delay;
+        
+        // Initialize audio context and create dark ambient music
+        function initMusic() {
+            if (!musicEnabled) {
+                // Create audio context
+                Tone.start();
+                
+                // Create instruments
+                synth = new Tone.PolySynth().toDestination();
+                reverb = new Tone.Reverb(8).toDestination();
+                delay = new Tone.FeedbackDelay("8n", 0.3).toDestination();
+                
+                // Chain effects
+                synth.connect(reverb);
+                synth.connect(delay);
+                
+                // Create dark ambient sequence
+                const sequence = new Tone.Sequence((time, note) => {
+                    synth.triggerAttackRelease(note, "2n", time);
+                }, ["C2", "Eb2", "F2", "G2", "Bb2"], "4n");
+                
+                sequence.start();
+                Tone.Transport.bpm.value = 60; // Slow, ominous tempo
+                Tone.Transport.start();
+                
+                musicEnabled = true;
+                document.getElementById('musicControl').innerHTML = '🔇';
+            } else {
+                Tone.Transport.stop();
+                musicEnabled = false;
+                document.getElementById('musicControl').innerHTML = '🔊';
+            }
+        }
+        
+        // Music control
+        document.getElementById('musicControl').addEventListener('click', initMusic);
+        document.getElementById('signup-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const userData = Object.fromEntries(formData);
+            
+            // Simulate signup process
+            alert(`Welcome to Alara, ${userData.name}! Your journey of self-discovery begins now.`);
+            console.log('Signup data:', userData);
+        });
+
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const loginData = Object.fromEntries(formData);
+            
+            // Simulate login process
+            alert('Welcome back, traveler! Your story continues...');
+            console.log('Login data:', loginData);
+        });
+
+        // File upload handling
+        document.getElementById('image-upload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const label = document.querySelector('label[for="image-upload"]');
+                label.innerHTML = `📸 Selected: ${file.name}<br><small>Ready to analyze!</small>`;
+                label.style.borderColor = '#4ecdc4';
+                label.style.background = 'rgba(78, 205, 196, 0.1)';
+            }
+        });
+
+        document.getElementById('upload-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const fileInput = document.getElementById('image-upload');
+            const loading = document.getElementById('loading');
+            const messageDiv = document.getElementById('upload-message');
+            const storyContent = document.getElementById('story-content');
+            
+            if (!fileInput.files[0]) {
+                alert('Please select an artwork to upload first.');
+                return;
+            }
+            
+            // Show loading animation
+            loading.style.display = 'block';
+            messageDiv.innerHTML = '<p style="color: #4ecdc4;">🔮 Our AI guardians are analyzing your artwork...</p>';
+            
+            // Simulate AI processing
+            setTimeout(() => {
+                loading.style.display = 'none';
+                messageDiv.innerHTML = '<p style="color: #96c93d;">✅ Analysis complete! Your story is being woven...</p>';
+                
+                // Generate sample story
+                const sampleStory = `
+                    <h3>🌟 Your Alara Chronicle: "The Keeper of Hidden Colors"</h3>
+                    <div style="background: rgba(0,0,0,0.3); padding: 25px; border-radius: 15px; margin: 20px 0; text-align: left;">
+                        <p><strong>In the realm of Alara, your avatar emerges as Lyrian, the Keeper of Hidden Colors...</strong></p>
+                        
+                        <p>The artwork you've shared reveals deep wells of creativity tinged with introspective energy. The dominant blues and greens in your piece suggest a connection to tranquility and growth, while the subtle warm undertones hint at passion carefully contained.</p>
+                        
+                        <p>Lyrian walks through the Whispering Gallery, where each stroke of your brush has become a living memory. The composition's balanced asymmetry reflects your ability to find harmony within life's complexities, while the texture speaks to your tactile relationship with the world around you.</p>
+                        
+                        <p><em>"What the art reveals: A mind that processes emotions through visual metaphor, seeking balance between inner calm and expressive passion. The psychological pattern suggests someone who uses creativity as both sanctuary and communication tool."</em></p>
+                        
+                        <p><strong>Continue your journey by uploading more artwork or exploring your daily experiences...</strong></p>
+                    </div>
+                `;
+                
+                storyContent.innerHTML = sampleStory;
+            }, 3000);
+        });
+
+        // Smooth scrolling for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add floating animation to AI cards
+        const aiCards = document.querySelectorAll('.ai-card');
+        aiCards.forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.2}s`;
+            card.style.animation = 'float 6s ease-in-out infinite';
+        });
+
+        // Add CSS animation for floating effect
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes float {
+                0%, 100% { transform: translateY(0px); }
+                50% { transform: translateY(-10px); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
