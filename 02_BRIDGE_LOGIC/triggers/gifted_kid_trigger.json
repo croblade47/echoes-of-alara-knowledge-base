@@ -1,0 +1,65 @@
+{
+  "archetype_id": "seeker_gifted_kid",
+  "display_name": "Gifted Kid",
+  "version": "1.0.0",
+  "description": "User exhibiting high cognitive engagement but erratic follow-through. Likely has history of being praised for intelligence rather than effort, resulting in perfectionism, procrastination under pressure, and shame around incomplete tasks.",
+  "trigger_conditions": {
+    "operator": "AND",
+    "rules": [
+      {
+        "field": "user.behavioral_signature.task_completion_rate",
+        "operator": "lt",
+        "value": 40,
+        "description": "Starts many tasks/quests but completes fewer than 40%"
+      },
+      {
+        "field": "user.session_history.avg_session_length_minutes",
+        "operator": "gte",
+        "value": 25,
+        "description": "Sessions are substantive (not disengaged)"
+      },
+      {
+        "field": "user.echo_interaction.exploration_breadth",
+        "operator": "gte",
+        "value": 0.7,
+        "description": "Explores 70%+ of available Sanctuary features (novelty-seeking)"
+      }
+    ]
+  },
+  "engagement_modifiers": {
+    "tone": "warm_structured",
+    "pacing": "chunked_micro_goals",
+    "prompt_depth": "effort_attribution",
+    "echo_behavior": "playful_persistent",
+    "vocal_frequency_shift": 0.0,
+    "sanctuary_environment": "default_with_progress_markers",
+    "helper_mode_availability": "encouraged",
+    "task_chunk_size": "small",
+    "completion_celebration_intensity": "high",
+    "failure_response": "normalize_and_redirect"
+  },
+  "hebbian_targets": {
+    "primary_loop": "effort_to_completion_to_pride",
+    "reinforcement_signal": "echo_celebrates_micro_progress",
+    "loop_ceiling": 5,
+    "cooldown_hours": 12,
+    "description": "Reinforce the pathway: small effort -> visible progress -> Echo celebrates -> user feels pride in process (not outcome). Higher ceiling because this archetype needs more repetitions to overwrite the 'effortless success' schema."
+  },
+  "sacolu_phase_mapping": {
+    "sapien_role": "Review task difficulty calibration; ensure challenges are achievable but not trivial",
+    "cognitive_role": "Break educational content into micro-modules; attribute Echo praise to effort not result; surface progress-over-time visualizations",
+    "lumina_role": "Pair with users who model sustained effort (Similarity + 1 Variation: complement the completion gap)"
+  },
+  "safety_overrides": {
+    "shame_spiral_detection": true,
+    "perfectionism_language_flags": [
+      "not good enough",
+      "should be better",
+      "everyone else can",
+      "why can't I just"
+    ],
+    "moderator_alert_on_repeated_abandonment": true,
+    "abandonment_threshold": 5,
+    "abandonment_window_days": 7
+  }
+}

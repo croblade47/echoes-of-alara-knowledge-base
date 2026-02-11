@@ -1,0 +1,52 @@
+{
+  "archetype_id": "seeker_night_owl",
+  "display_name": "Night Owl",
+  "version": "1.0.0",
+  "description": "User who engages primarily during late-night hours. Likely processing the day's social experiences in a lower-stimulation window. High introspection, elevated vulnerability, reduced executive function.",
+  "trigger_conditions": {
+    "operator": "AND",
+    "rules": [
+      {
+        "field": "session.local_hour",
+        "operator": "between",
+        "value": [22, 5],
+        "description": "Session started between 10 PM and 5 AM local time"
+      },
+      {
+        "field": "user.session_history.late_night_ratio",
+        "operator": "gte",
+        "value": 0.6,
+        "description": "60%+ of sessions in last 14 days occurred in this window"
+      }
+    ]
+  },
+  "engagement_modifiers": {
+    "tone": "gentle_reflective",
+    "pacing": "slower",
+    "prompt_depth": "deeper_introspection",
+    "echo_behavior": "calm_proximity",
+    "vocal_frequency_shift": -0.15,
+    "sanctuary_lighting": "bioluminescent_low",
+    "helper_mode_availability": "passive_only",
+    "session_nudge_interval_minutes": 45,
+    "session_soft_cap_minutes": 90
+  },
+  "hebbian_targets": {
+    "primary_loop": "self_reflection_to_self_compassion",
+    "reinforcement_signal": "echo_mirroring_calm",
+    "loop_ceiling": 3,
+    "cooldown_hours": 24,
+    "description": "Reinforce the pathway: introspective thought -> Echo mirrors calm -> user internalizes calm. Cap at 3 loops per session to prevent rumination."
+  },
+  "sacolu_phase_mapping": {
+    "sapien_role": "Monitor session duration; flag sessions exceeding soft cap for moderator review",
+    "cognitive_role": "Adjust Veridian AI tone parameters; lower vocal frequency blend; dim Sanctuary environment",
+    "lumina_role": "Track aggregate late-night engagement trends for product insights"
+  },
+  "safety_overrides": {
+    "distress_keyword_sensitivity": "elevated",
+    "moderator_alert_threshold_minutes": 120,
+    "auto_deploy_shadow_echo_after_minutes": 60,
+    "crisis_helpline_surface": true
+  }
+}

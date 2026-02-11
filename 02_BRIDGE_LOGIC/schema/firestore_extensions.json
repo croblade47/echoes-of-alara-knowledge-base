@@ -1,0 +1,176 @@
+{
+  "_meta": {
+    "document": "Firestore Document Field Extensions for Bridge Logic",
+    "target_collection": "User_Profiles",
+    "version": "1.0.0",
+    "date": "2026-02-11",
+    "description": "These fields should be merged into existing User_Profiles documents. They track Hebbian loop state, SaCoLu phase progression, and Seeker archetype classification."
+  },
+  "field_definitions": {
+    "hebbian_state": {
+      "type": "map",
+      "description": "Tracks the user's current Hebbian reinforcement loop state",
+      "fields": {
+        "active_loop": {
+          "type": "string",
+          "nullable": true,
+          "description": "Name of the currently active Hebbian loop (e.g., 'self_reflection_to_self_compassion')",
+          "default": null
+        },
+        "loop_count": {
+          "type": "number",
+          "description": "Number of reinforcement cycles completed in the current session",
+          "default": 0
+        },
+        "loop_ceiling": {
+          "type": "number",
+          "description": "Maximum reinforcement cycles allowed per session (from archetype trigger)",
+          "default": 3
+        },
+        "last_reinforcement_at": {
+          "type": "timestamp",
+          "nullable": true,
+          "description": "When the last reinforcement signal was delivered",
+          "default": null
+        },
+        "cooldown_until": {
+          "type": "timestamp",
+          "nullable": true,
+          "description": "Reinforcement is paused until this time (null = no cooldown)",
+          "default": null
+        },
+        "lifetime_loops": {
+          "type": "map",
+          "description": "Cumulative count of completed loops by loop name (for research analytics)",
+          "example": {
+            "self_reflection_to_self_compassion": 47,
+            "effort_to_completion_to_pride": 12
+          }
+        }
+      }
+    },
+    "sacolu_phase": {
+      "type": "map",
+      "description": "Tracks the user's current SaCoLu governance phase",
+      "fields": {
+        "current_phase": {
+          "type": "string",
+          "description": "Active SaCoLu phase",
+          "enum": [
+            "lumina_onboarding",
+            "cognitive_active",
+            "sapien_escalation",
+            "lumina_integration"
+          ],
+          "default": "lumina_onboarding"
+        },
+        "phase_entered_at": {
+          "type": "timestamp",
+          "description": "When the user entered the current phase"
+        },
+        "phase_history": {
+          "type": "array",
+          "description": "Ordered list of previous phase transitions",
+          "items": {
+            "type": "map",
+            "fields": {
+              "phase": { "type": "string" },
+              "entered_at": { "type": "timestamp" },
+              "exited_at": { "type": "timestamp" }
+            }
+          }
+        },
+        "sapien_override_active": {
+          "type": "boolean",
+          "description": "True if a human moderator has taken override control",
+          "default": false
+        },
+        "override_reason": {
+          "type": "string",
+          "nullable": true,
+          "description": "Moderator-provided reason for override (null if no override)",
+          "default": null
+        }
+      }
+    },
+    "seeker_archetype": {
+      "type": "map",
+      "description": "The user's classified Seeker archetype (re-evaluated periodically)",
+      "fields": {
+        "primary": {
+          "type": "string",
+          "nullable": true,
+          "description": "Primary archetype ID (e.g., 'seeker_night_owl')",
+          "default": null
+        },
+        "confidence": {
+          "type": "number",
+          "description": "Confidence score for primary classification (0.0 - 1.0)",
+          "default": 0.0
+        },
+        "secondary": {
+          "type": "string",
+          "nullable": true,
+          "description": "Secondary archetype ID (if applicable)",
+          "default": null
+        },
+        "secondary_confidence": {
+          "type": "number",
+          "description": "Confidence score for secondary classification",
+          "default": 0.0
+        },
+        "last_evaluated_at": {
+          "type": "timestamp",
+          "nullable": true,
+          "description": "When the archetype was last evaluated",
+          "default": null
+        },
+        "evaluation_window_days": {
+          "type": "number",
+          "description": "Number of days of session history used for evaluation",
+          "default": 14
+        }
+      }
+    }
+  },
+  "example_document": {
+    "user_id": "user_abc123",
+    "behavioral_signature": {
+      "risk_tolerance": 35,
+      "social_anxiety": 72,
+      "task_completion_rate": 38
+    },
+    "hebbian_state": {
+      "active_loop": "effort_to_completion_to_pride",
+      "loop_count": 2,
+      "loop_ceiling": 5,
+      "last_reinforcement_at": "2026-02-11T03:14:00Z",
+      "cooldown_until": null,
+      "lifetime_loops": {
+        "effort_to_completion_to_pride": 14,
+        "self_reflection_to_self_compassion": 3
+      }
+    },
+    "sacolu_phase": {
+      "current_phase": "cognitive_active",
+      "phase_entered_at": "2026-02-08T10:00:00Z",
+      "phase_history": [
+        {
+          "phase": "lumina_onboarding",
+          "entered_at": "2026-02-01T10:00:00Z",
+          "exited_at": "2026-02-08T10:00:00Z"
+        }
+      ],
+      "sapien_override_active": false,
+      "override_reason": null
+    },
+    "seeker_archetype": {
+      "primary": "seeker_gifted_kid",
+      "confidence": 0.78,
+      "secondary": "seeker_night_owl",
+      "secondary_confidence": 0.41,
+      "last_evaluated_at": "2026-02-10T00:00:00Z",
+      "evaluation_window_days": 14
+    }
+  }
+}
